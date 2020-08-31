@@ -1,0 +1,17 @@
+PORT=8080
+APP_NAME="Typescript Authentication Service"
+API_BASE="/api/v1"
+JWT_SECRET="JWT_SECRET"
+JWT_EXPIRES_IN=100
+
+# MONGO
+MONGO_HOSTNAME=localhost
+MONGO_PORT=27017
+MONGO_USERNAME=user
+MONGO_PASSWORD=123
+MONGO_DB_NAME=ts_auth_db
+MONGO_RS=
+
+# Logs
+LogFilePath="logs"
+LogStreamFilePath="logs/streamlogs"
