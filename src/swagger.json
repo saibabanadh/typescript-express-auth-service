@@ -1,0 +1,165 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a typescript-express-auth-service",
+        "version": "1.0.0",
+        "title": "Express Authentication Service using TypeScript"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api/v1",
+    "schemes": [ "http" ],
+    "securityDefinitions": {
+        "JWT": {
+            "type": "apiKey",
+            "name": "authorization",
+            "in": "header"
+        }
+    },
+    "paths": {
+        "/":{
+            "get": {
+                "tags": [ "Probe API" ],
+                "summary": "Probe API",
+                "description": "Used to check API is running or not",
+                "operationId": "probeAPI",
+                "produces": [ "application/json" ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [ "Login API" ],
+                "summary": "Authenticate User",
+                "description": "Authenticate the user with email & password",
+                "operationId": "login",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Login Object",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                    "description": "Success"
+                    },
+                    "404": {
+                    "description": "Not Found"
+                    },
+                    "500": {
+                    "description": "Internal Error"
+                    }
+                }
+            }
+        },
+        "/users":{
+            "post": {
+                "tags": [ "Users API" ],
+                "summary": "Add a new user to the Database",
+                "description": "Add new user",
+                "operationId": "createUser",
+                "consumes": [ "application/json" ],
+                "produces": [ "application/json" ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "User object that needs to be added to the database",
+                        "required": true,
+                        "schema": {
+                        "$ref": "#/definitions/User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successfully Created"
+                    },
+                    "422": {
+                        "description": "Conflict - User already exists"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "get": {
+                "tags": [ "Users API" ],
+                "summary": "Get All Users",
+                "description": "Get all users from database",
+                "operationId": "getUsers",
+                "produces": [ "application/json" ],
+                "security": [
+                    {
+                        "JWT": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/GetUsers"
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Login": {
+            "type": "object",
+            "required": [ "email", "password" ],
+            "properties": {
+                "email": { "type": "string" },
+                "password": { "type": "string" }
+            }
+        },
+        "User": {
+            "type": "object",
+            "required": [ "firstName", "lastName", "userName", "email", "password" ],
+            "properties": {
+                "firstName": { "type": "string" },
+                "lastName": { "type": "string" },
+                "userName": { "type": "string" },
+                "email": { "type": "string" },
+                "gender": { "type": "string" , 
+                    "availableValues": {
+                        "valuesType": "LIST",
+                        "values": ["male","female","undisclosed"]
+                    }
+                },
+                "password": { "type": "string" }
+            }
+        },
+        "GetUsers": {
+            "type": "object",
+            "properties": {
+                "_id": { "type": "string" },
+                "firstName": { "type": "string" },
+                "lastName": { "type": "string" },
+                "userName": { "type": "string" },
+                "email": { "type": "string" },
+                "gender": { "type": "string"}
+            }
+        }
+    }
+}
